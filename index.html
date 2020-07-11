@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotjar Page Targeting Verifier</title>
+    <script src="targeting.js"></script>
+</head>
+<body>
+    <div class="app">
+        <div class="target">
+          <label for="rule">Enter a targeting parameter:</label>
+          <br>
+          <input type="text" name="rule" id="rule" placeholder="Target">
+        </div>
+        <br>
+        <div class="match">
+            <label for="url">Enter a URL to match:</label>
+            <br>
+            <input type="text" name="url" id="url" placeholder="Match">
+        </div>
+        <br>
+        <div class="rule-select">
+        <label for="rule-select">Select a targeting rule:</label>
+        <br>
+        <select name="rules" id="rule-select">
+            <option value="simple">
+                Simple Match
+            </option>
+            <option value="contains">
+                URL Contains
+            </option>
+            <option value="endswith">
+                URL Ends With
+            </option>
+        </select>
+        <button type="submit" onclick=check()>Check</button>
+        </div>
+    </div>
+</body>
+</html>
