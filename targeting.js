@@ -24,6 +24,8 @@ function check() {
         urlContains();
     } else if (selection === 'endswith') {
         endswith();
+    } else if (selection === 'startswith') {
+        startswith();
     }
 }
 
@@ -53,6 +55,25 @@ function endswith() {
     if (rule !== "" && url !== "") {
         endsrule = `.*${rule}$`
         regex = new RegExp(endsrule, 'gm');
+        if (url.match(regex)) {
+            console.log("It's a match!");
+        } else if (!url.match(regex)) {
+            console.log("Not a match.");
+        }
+    } else if (rule === "") {
+        console.log("Please enter a targeting parameter.");
+    } else if (url === "") {
+        console.log("Please enter a URL to match.");
+    }
+}
+function startswith() {
+    let rule = document.getElementById('rule').value;
+    let url = document.getElementById('url').value;
+    let startsrule;
+    let regex;
+    if (rule !== "" && url !== "") {
+        startsrule = `^${rule}.*`
+        regex = new RegExp(startsrule, 'gm');
         if (url.match(regex)) {
             console.log("It's a match!");
         } else if (!url.match(regex)) {
