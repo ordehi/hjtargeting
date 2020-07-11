@@ -1,31 +1,29 @@
-function matchRegex(strRegex, str) {
-    let regex = new RegExp(strRegex, 'gm');
-    let m;
-    
-    while ((m = regex.exec(str)) !== null) {
-        // This is necessary to avoid infinite loops with zero-width matches
-        if (m.index === regex.lastIndex) {
-            regex.lastIndex++;
-        }
-        
-        // The result can be accessed through the `m`-variable.
-        m.forEach((match, groupIndex) => {
-            console.log(`Found match, group ${groupIndex}: ${match}`);
-        });
-    }  
-}
-
-// let rule = "";
-// let url = "";
-
 function check() {
     let selection = document.getElementById('rule-select').value;
-    if (selection === 'contains') {
+    if (selection === 'exact') {
+        exactmatch();
+    }  else if (selection === 'contains') {
         urlContains();
     } else if (selection === 'endswith') {
         endswith();
     } else if (selection === 'startswith') {
         startswith();
+    }
+}
+
+function exactmatch() {
+    let rule = document.getElementById('rule').value;
+    let url = document.getElementById('url').value;
+    if (rule !== "" && url !== "") {
+        if (rule === url) {
+            console.log("It's a match!");
+        } else {
+            console.log("Not a match.");
+        }
+    } else if (rule === "") {
+        console.log("Please enter a targeting parameter.");
+    } else if (url === "") {
+        console.log("Please enter a URL to match.");
     }
 }
 
