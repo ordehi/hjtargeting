@@ -22,6 +22,8 @@ function check() {
     let selection = document.getElementById('rule-select').value;
     if (selection === 'contains') {
         urlContains();
+    } else if (selection === 'endswith') {
+        endswith();
     }
 }
 
@@ -29,30 +31,37 @@ function urlContains() {
     let rule = document.getElementById('rule').value;
     let url = document.getElementById('url').value;
     let regex;
-    if (rule !== null && url !== null) {
+    if (rule !== "" && url !== "") {
         regex = new RegExp(rule, 'gm');
-    } else if (rule === null) {
+        if (url.match(regex)) {
+            console.log("It's a match!");
+        } else if (!url.match(regex)) {
+            console.log("Not a match.");
+        }
+    } else if (rule === "") {
         console.log("Please enter a targeting parameter.");
-    } else if (url === null) {
+    } else if (url === "") {
         console.log("Please enter a URL to match.");
-    }
-
-    if (url.match(regex) !== null) {
-        console.log("It's a match!");
-    } else if (url.match(regex) === null) {
-        console.log("Not a match.");
     }
 }
 
 function endswith() {
     let rule = document.getElementById('rule').value;
     let url = document.getElementById('url').value;
-    let regex = new RegExp(rule, 'gm');
-    let found = url.match(regex);
-    if (found === null) {
-        console.log(found);
-    } else {
-        console.log("");
+    let endsrule;
+    let regex;
+    if (rule !== "" && url !== "") {
+        endsrule = `.*${rule}$`
+        regex = new RegExp(endsrule, 'gm');
+        if (url.match(regex)) {
+            console.log("It's a match!");
+        } else if (!url.match(regex)) {
+            console.log("Not a match.");
+        }
+    } else if (rule === "") {
+        console.log("Please enter a targeting parameter.");
+    } else if (url === "") {
+        console.log("Please enter a URL to match.");
     }
 }
 
