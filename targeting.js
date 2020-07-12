@@ -1,25 +1,66 @@
 function check() {
     let selection = document.getElementById('rule-select').value;
-    if (selection === 'exact') {
+    if (selection === 'simple') {
+        simplematch();
+    } else if (selection === 'exact') {
         exactmatch();
     }  else if (selection === 'contains') {
         urlContains();
     } else if (selection === 'endswith') {
-        endswith();
+        urlEndswith();
     } else if (selection === 'startswith') {
-        startswith();
+        urlStartswith();
     }
 }
+
+const validURL = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+
+// function log(x) {
+//      $("#result").append(x + "<br>");
+//  }
+
+function simplematch() {
+    let protocol = /^https?:\/\//;
+    let www = /www\./;
+    let params = /\#.*|\?.*|&.*/;
+    let rule = document.getElementById('rule').value;
+    let url = document.getElementById('url').value;
+
+    rule = rule.replace(protocol, '');
+    rule = rule.replace(www, '');
+    url = url.replace(protocol, '');
+    url = url.replace(www, '');
+    let cleanRule = rule.replace(params, '');
+    let cleanURL = url.replace(params, '');
+
+
+    if (validURL.test(rule) && validURL.test(url)) {
+    cleanRule.match(cleanURL) ? 
+    console.log("It's a match!") : console.log("Not a match.");
+    } else if (rule === "") {
+        console.log("Please enter a targeting parameter.");
+    } else if (url === "") {
+        console.log("Please enter a URL to match.");
+    } else if (!validURL.test(rule)) {
+        console.log(`Please enter a valid URL
+        Format must be http://example.com`);
+    } else if (!validURL.test(url)) {
+        console.log(`Please enter a valid URL
+        Format must be http://example.com`);
+    }
+}
+
+
+// for (let i = 0; i < urls.length; i++) {
+//     log(simplematch(urls[i]));
+// }
 
 function exactmatch() {
     let rule = document.getElementById('rule').value;
     let url = document.getElementById('url').value;
     if (rule !== "" && url !== "") {
-        if (rule === url) {
-            console.log("It's a match!");
-        } else {
-            console.log("Not a match.");
-        }
+        rule.toLowerCase() === url.toLowerCase() ?
+        console.log("It's a match!") : console.log("Not a match.");
     } else if (rule === "") {
         console.log("Please enter a targeting parameter.");
     } else if (url === "") {
@@ -30,14 +71,9 @@ function exactmatch() {
 function urlContains() {
     let rule = document.getElementById('rule').value;
     let url = document.getElementById('url').value;
-    let regex;
     if (rule !== "" && url !== "") {
-        regex = new RegExp(rule, 'gm');
-        if (url.match(regex)) {
-            console.log("It's a match!");
-        } else if (!url.match(regex)) {
-            console.log("Not a match.");
-        }
+        url.toLowerCase().includes(rule.toLowerCase()) ?
+        console.log("It's a match!") : console.log("Not a match.");
     } else if (rule === "") {
         console.log("Please enter a targeting parameter.");
     } else if (url === "") {
@@ -45,38 +81,12 @@ function urlContains() {
     }
 }
 
-function endswith() {
+function urlStartswith() {
     let rule = document.getElementById('rule').value;
     let url = document.getElementById('url').value;
-    let endsrule;
-    let regex;
     if (rule !== "" && url !== "") {
-        endsrule = `.*${rule}$`
-        regex = new RegExp(endsrule, 'gm');
-        if (url.match(regex)) {
-            console.log("It's a match!");
-        } else if (!url.match(regex)) {
-            console.log("Not a match.");
-        }
-    } else if (rule === "") {
-        console.log("Please enter a targeting parameter.");
-    } else if (url === "") {
-        console.log("Please enter a URL to match.");
-    }
-}
-function startswith() {
-    let rule = document.getElementById('rule').value;
-    let url = document.getElementById('url').value;
-    let startsrule;
-    let regex;
-    if (rule !== "" && url !== "") {
-        startsrule = `^${rule}.*`
-        regex = new RegExp(startsrule, 'gm');
-        if (url.match(regex)) {
-            console.log("It's a match!");
-        } else if (!url.match(regex)) {
-            console.log("Not a match.");
-        }
+        url.toLowerCase().startsWith(rule.toLowerCase()) ?
+        console.log("It's a match!") : console.log("Not a match.");
     } else if (rule === "") {
         console.log("Please enter a targeting parameter.");
     } else if (url === "") {
@@ -84,8 +94,15 @@ function startswith() {
     }
 }
 
-// function urlContains(input, compare) {
-//     let regex = new RegExp(input, 'gm');
-//     let found = compare.match(regex);
-//     console.log(found);
-// }
+function urlEndswith() {
+    let rule = document.getElementById('rule').value;
+    let url = document.getElementById('url').value;
+    if (rule !== "" && url !== "") {
+        url.toLowerCase().endsWith(rule.toLowerCase()) ?
+        console.log("It's a match!") : console.log("Not a match.");
+    } else if (rule === "") {
+        console.log("Please enter a targeting parameter.");
+    } else if (url === "") {
+        console.log("Please enter a URL to match.");
+    }
+}
