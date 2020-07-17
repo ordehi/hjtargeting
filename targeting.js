@@ -22,21 +22,19 @@ const validURL = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6
 function simplematch() {
     let protocol = /^https?:\/\//;
     let www = /www\./;
-    let params = /\#.*|\?.*|&.*/;
+    let params = /\#.*|\?.*|&.*|\/$/;
     let rule = document.getElementById('rule').value;
     let url = document.getElementById('url').value;
 
-    rule = rule.replace(protocol, '');
-    rule = rule.replace(www, '');
-    url = url.replace(protocol, '');
-    url = url.replace(www, '');
-    let cleanRule = rule.replace(params, '');
-    let cleanURL = url.replace(params, '');
-
-
     if (validURL.test(rule) && validURL.test(url)) {
-    cleanRule.match(cleanURL) ? 
-    console.log("It's a match!") : console.log("Not a match.");
+        rule = rule.replace(protocol, '').replace(www, '').replace(params, '');
+        // rule = rule.replace(www, '');
+        url = url.replace(protocol, '').replace(www, '').replace(params, '');
+        // url = url.replace(www, '');
+        // let cleanRule = new URL(rule);
+        // let cleanURL = new URL(url);
+        rule === url ? 
+        console.log("It's a match!") : console.log("Not a match.");
     } else if (rule === "") {
         console.log("Please enter a targeting parameter.");
     } else if (url === "") {
