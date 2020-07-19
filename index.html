@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotjar Page Targeting Verifier</title>
-    <script src="targeting.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <h1>Test your Page Targeting 🎯</h1>
     <div class="app">
         <div class="target">
           <label for="rule">Enter a targeting parameter:</label>
@@ -43,5 +44,8 @@
         <button type="submit" onclick=check()>Check</button>
         </div>
     </div>
+    <br>
+    <div id="result"></div>
+    <script src="targeting.js"></script>
 </body>
 </html>
