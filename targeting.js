@@ -35,7 +35,7 @@ Format must be http://example.com`);
 function simplematch(rule, urls) {
     let protocol = /^https?:\/\//;
     let www = /www\./;
-    let params = /\#.*|\?.*|&.*|\/\#.*|\/\?.*/;
+    let params = /\#.*|\?.*|&.*|\/\#.*|\/\?.*|\/$/;
     rule = rule.replace(protocol, '').replace(www, '').replace(params, '');
     let cleanURLs = urls.map(function(url) {
         url = url.replace(protocol, '').replace(www, '').replace(params, '');
