@@ -67,7 +67,7 @@ function simplematch(rule, urls, validity) {
     });
 
     let matches = [];
-    cleanURLs.forEach(url => matches.push(url.toLowerCase().includes(cleanRule.toLowerCase())));
+    cleanURLs.forEach(url => matches.push(url.toLowerCase() === cleanRule.toLowerCase()));
 
     let result = generateResultHTML(matches, urls, validity);
     resultDiv.innerHTML = result;
