@@ -1,6 +1,34 @@
 body {
-    font-family: system-ui;
-    background: #fd3a5c;
-    color: white;
+    font-family: 'Open Sans', sans-serif;
+    background: #fff;
+    color: #3c3c3c;
+  }
+
+  .app {
     text-align: center;
   }
+
+  h1, h3 {
+    font-family: 'Merriweather', serif;
+    text-align: center;
+  }
+
+  ul {
+    text-align: center;
+    list-style-position: inside;
+    list-style: none;
+  }
+
+  .match {
+    background-color: #42FFCC;
+  }
+
+  .notamatch {
+    background-color: #FD3A5C;
+  }
+
+  .partial {
+    color: violet;
+  }
+
+ /* hj #fd3a5c */

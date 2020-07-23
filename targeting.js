@@ -1,87 +1,104 @@
 const resultDiv = document.getElementById('result');
-const validURL = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+const validURL = /(https?:\/\/)+([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/;
+
+function validateURLs(urls) {
+    let validArr = [];
+    urls.forEach(url => validArr.push(validURL.test(url)));
+    return validArr;
+}
 
 function check() {
     let selection = document.getElementById('rule-select').value;
     let rule = document.getElementById('rule').value;
-    let urls = document.getElementById('url').value.split(/\n|\,/);
+    let urls = document.getElementById('url').value.split(/\n|\,/).filter(item => item);
+    let validity = validateURLs(urls);
     
     if (selection === 'simple' && validURL.test(rule) && validURL.test(urls)) {
-        simplematch(rule, urls);
+        simplematch(rule, urls, validity);
     } else if (selection === 'exact' && validURL.test(rule) && validURL.test(urls)) {
-        exactmatch(rule, urls);
-    } else if (selection === 'contains' && rule !== '' && urls !== '') {
-        urlContains(rule, urls);
-    } else if (selection === 'endswith' && rule !== '' && urls !== '') {
-        urlEndswith(rule, urls);
-    } else if (selection === 'startswith' && rule !== '' && urls !== '') {
-        urlStartswith(rule, urls);
+        exactmatch(rule, urls, validity);
+    } else if (selection === 'contains' && rule !== '' && urls !== '' && validURL.test(urls)) {
+        urlContains(rule, urls, validity);
+    } else if (selection === 'endswith' && rule !== '' && urls !== '' && validURL.test(urls)) {
+        urlEndswith(rule, urls, validity);
+    } else if (selection === 'startswith' && rule !== '' && urls !== '' && validURL.test(urls)) {
+        urlStartswith(rule, urls, validity);
     } else {
-        invalidInput(rule, urls);
+        invalidInput(rule, urls, validity);
     }
   }
 
 function invalidInput(rule, urls) {
     if (rule === "") {
-        console.log("Please enter a targeting parameter.");
-    } else if (urls === "") {
-        console.log("Please enter a URL to match.");
+        resultDiv.innerHTML = "<h3>❗ Please enter a targeting parameter</h3>";
+    } else if (urls.length === 0) {
+        resultDiv.innerHTML = "<h3>❗ Please enter a URL to match</h3>";
     } else if (!validURL.test(rule) || !validURL.test(urls)) {
-        console.log(`Please enter valid URLs
-Format must be http://example.com`);
+        resultDiv.innerHTML = "<h3>❗ Please enter valid URLs. <br> Format must be http://example.com</h3>";
     }
 }
 
-function simplematch(rule, urls) {
+function generateResultHTML(matches, urls, validity) {
+    let resultHTML = `<ul>`;
+    for (let i = 0; i < matches.length; i++) {
+        if (matches[i] && validity[i]) {
+            resultHTML += `<li><span class="match"> ${urls[i]}</span></li>`;
+        } else if (matches[i] && !validity[i]) {
+            resultHTML += `<li>❓ <span class="partial">${urls[i]} <- part of the string matches but it is not a valid URL
+            Format must be http://example.com</span></li>`;
+        } else if (!matches[i] && !validity[i]) {
+            resultHTML += `<li>❗❗ <span class="notamatch">${urls[i]}</span> is not a valid URL</li>`;
+        } else {
+            resultHTML += `<li><span class="notamatch"> ${urls[i]}</span></li>`;
+        }
+    }
+    resultHTML += `</ul>`;
+    return resultHTML;
+}
+
+function simplematch(rule, urls, validity) {
     let protocol = /^https?:\/\//;
     let www = /www\./;
     let params = /\#.*|\?.*|&.*|\/\#.*|\/\?.*|\/$/;
-    rule = rule.replace(protocol, '').replace(www, '').replace(params, '');
+    let cleanRule = rule.replace(protocol, '').replace(www, '').replace(params, '');
     let cleanURLs = urls.map(function(url) {
         url = url.replace(protocol, '').replace(www, '').replace(params, '');
         return url;
     });
 
-    let result = generateResultHTML(cleanURLs);
-    
-    function generateResultHTML() {
-        let resultHTML = `<ul>`;
-        for (let i = 0; i < cleanURLs.length; i++) {
-            if (rule === cleanURLs[i]) {
-                resultHTML += `<li class="match">✅ ${urls[i]}</li>`;
-            } else {
-                resultHTML += `<li class="notamatch">❌ ${urls[i]}</li>`;
-            }
-        }
-        resultHTML += `</ul>`;
-        return resultHTML;
-    }
+    let matches = [];
+    cleanURLs.forEach(url => matches.push(url.toLowerCase().includes(cleanRule.toLowerCase())));
+
+    let result = generateResultHTML(matches, urls, validity);
     resultDiv.innerHTML = result;
 }
 
-
-// for (let i = 0; i < urls.length; i++) {
-//     log(simplematch(urls[i]));
-// }
-
-function exactmatch(rule, urls) {
-    let result = rule.toLowerCase() === urls.toLowerCase();
-    printResult(result);
+function exactmatch(rule, urls, validity) {
+    let matches = [];
+    urls.forEach(url => matches.push(url === rule));
+    let result = generateResultHTML(matches, urls, validity);
+    resultDiv.innerHTML = result;
 }
 
-function urlContains(rule, urls) {
-    let result = urls.toLowerCase().includes(rule.toLowerCase());
-    printResult(result);
+function urlContains(rule, urls, validity) {
+    let matches = [];
+    urls.forEach(url => matches.push(url.includes(rule)));
+    let result = generateResultHTML(matches, urls, validity);
+    resultDiv.innerHTML = result;
 }
 
-function urlStartswith(rule, urls) {
-    let result = urls.toLowerCase().startsWith(rule.toLowerCase());
-    printResult(result);
+function urlStartswith(rule, urls, validity) {
+    let matches = [];
+    urls.forEach(url => matches.push(url.startsWith(rule)));
+    let result = generateResultHTML(matches, urls, validity);
+    resultDiv.innerHTML = result;
 }
 
-function urlEndswith(rule, urls) {
-    let result = urls.toLowerCase().endsWith(rule.toLowerCase());
-    printResult(result);
+function urlEndswith(rule, urls, validity) {
+    let matches = [];
+    urls.forEach(url => matches.push(url.endsWith(rule)));
+    let result = generateResultHTML(matches, urls, validity);
+    resultDiv.innerHTML = result;
 }
 
 function printResult(bool) {
