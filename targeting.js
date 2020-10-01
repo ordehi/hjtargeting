@@ -2,6 +2,32 @@ const resultDiv = document.getElementById("result");
 const validURL = /(https?:\/\/)+([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/;
 
 const validateURLs = (urls) => urls.map((url) => validURL.test(url));
+const textarea = document.getElementById('url');
+const container = document.getElementsByClassName('matcharea');
+const backdrop = document.getElementsByClassName('backdrop');
+const highlights = document.getElementsByClassName('highlights');
+
+function handleInput() {
+  let text = textarea.value;
+  let highlightedText = applyHighlights(text);
+  highlights.innerHTML = highlightedText;
+}
+
+function applyHighlights(text) {
+  return text
+      .replace(/\n$/g, '\n\n')
+      .replace(/[A-Z].*?\b/g, '<mark></mark>');
+}
+
+function handleScroll() {
+  let scrollTop = textarea.scrollTop();
+  backdrop.scrollTop(scrollTop);
+}
+
+textarea.addEventListener('input', handleInput);
+textarea.addEventListener('scroll', handleScroll);
+
+
 
 function check() {
   let selection = document.getElementById("rule-select").value;
