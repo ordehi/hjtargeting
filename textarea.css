@@ -1,0 +1,192 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 15px;
+  background-color: #f0f0f0;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.app,
+.resources {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+}
+
+h1 {
+  font-family: 'Merriweather', serif;
+  color: #fd2f51;
+  padding: 10px;
+}
+
+h3 {
+  color: #555555;
+}
+
+input[type="text"] {
+  width: 80vw;
+  max-width: 800px;
+  height: 30px;
+  border: 2px solid;
+}
+
+.container,
+.backdrop,
+textarea {
+  width: 80vw;
+  max-width: 800px;
+  height: 50vh;
+}
+
+.highlights,
+textarea,
+input[type="text"] {
+  padding: 10px;
+  font: 20px/28px 'Open Sans',
+    sans-serif;
+  letter-spacing: 1px;
+}
+
+.container {
+  display: block;
+  margin: 0 auto;
+  transform: translateZ(0);
+  -webkit-text-size-adjust: none;
+}
+
+.backdrop {
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  overflow: auto;
+  pointer-events: none;
+  transition: transform 1s;
+}
+
+.highlights {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: transparent;
+}
+
+textarea {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  border: 2px solid black;
+  border-radius: 0;
+  color: #696969;
+  background-color: transparent;
+  overflow: auto;
+  resize: none;
+}
+
+mark {
+  border-radius: 3px;
+  color: transparent;
+}
+
+mark.no-match {
+  background-color: #ff6f6f;
+}
+
+mark.match {
+  background-color: #7cff6b;
+}
+
+/* button {
+  display: block;
+  width: 300px;
+  margin: 30px auto 0;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  background-color: #da2e4c;
+  font: 18px 'Opens Sans', sans-serif;
+  letter-spacing: 1px;
+  appearance: none;
+  cursor: pointer;
+} */
+
+.dark-mode {
+  display: block;
+  position: fixed;
+  left: 3px;
+  top: 3px;
+  width: fit-content;
+  padding: 5px;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  background-color: #000000;
+  font: 0.8rem 'Opens Sans', sans-serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.dark-mode:hover {
+  color: #000;
+  background-color: #fff;
+}
+
+textarea:focus,
+button:focus,
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 2px 2px #858585;
+}
+
+textarea,
+textarea:focus,
+button,
+button:focus,
+button:hover,
+input[type="text"],
+input[type="text"]:focus,
+a,
+a:hover {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resources {
+  align-items: flex-start;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #f4364c;
+}
+
+a img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px
+}
+
+.resources h3 {
+  align-self: center;
+}
+
+code {
+  display: block;
+  padding-top: 30px;
+  color: transparent;
+}

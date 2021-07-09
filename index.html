@@ -4,49 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotjar Page Targeting Verifier</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="textarea.css">
+    <script src="targeting.js" defer></script>
+    <script src="textarea.js" defer></script>
     <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i|Open+Sans:300,300i,400,400i,600,600i,700,700i&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Test your Page Targeting 🎯</h1>
-    <div class="app">
-        <div class="target">
-          <label for="rule">Enter a targeting parameter:</label>
-          <br>
-          <input type="text" name="rule" id="rule" placeholder="Target">
+
+        <div class="app">
+            <h1>Test your Page Targeting 🔥</h1>
+            <button class="dark-mode">🌛 Night</button>
+            <h3>⬇ URL on your Session Targeting / Tool Setup</h3>
+            <input type="text">
+            <h3>⬇ URL/s you want to match against</h3>
+                  <div class="container">
+            
+                    <div class="backdrop">
+                      <div class="highlights"></div>
+                    </div>
+                    <textarea class="highlighted-text"></textarea>
+                  </div>
         </div>
-        <br>
-        <div class="matcharea">
-            <label for="url">Enter a URL to match:</label>
-            <br>
-            <textarea name="url" id="url" cols="30" rows="10" placeholder="Match"></textarea>
-        </div>
-        <br>
-        <div class="rule-select">
-        <label for="rule-select">Select a targeting rule:</label>
-        <br>
-        <select name="rules" id="rule-select">
-            <option value="simple">
-                Simple Match
-            </option>
-            <option value="exact">
-                Exact Match
-            </option>
-            <option value="contains">
-                URL Contains
-            </option>
-            <option value="startswith">
-                URL Starts With
-            </option>
-            <option value="endswith">
-                URL Ends With
-            </option>
-        </select>
-        <button type="submit" onclick=check()>Check</button>
-        </div>
-    </div>
-    <br>
-    <div id="result"></div>
-    <script src="targeting.js"></script>
+
+<footer>
+    <nav class="resources">
+        <h3>Useful Resources</h3>
+        <a href="https://help.hotjar.com/hc/en-us/articles/360048489874-Configuring-Site-Settings-" rel="noopener" target="_blank"><img src="assets/flame.png" alt="flame"> Configuring Site Settings</a>
+        <a href="https://help.hotjar.com/hc/en-us/articles/115014943188" rel="noopener" target="_blank"><img src="assets/flame.png" alt="flame"> Page Targeting for Feedback Tools</a>
+        <a href="https://help.hotjar.com/hc/en-us/articles/1500001902342" rel="noopener" target="_blank"><img src="assets/flame.png" alt="flame"> URL Filtering for Continuous Heatmaps</a>
+        <a href="https://help.hotjar.com/hc/en-us/articles/115012727628" rel="noopener" target="_blank"><img src="assets/flame.png" alt="flame" > How to Use Regular Expressions for Page Targeting and IP Blocking</a>
+    </nav>
+    <code>made with love ❤</code>
+</footer>
 </body>
 </html>

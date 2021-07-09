@@ -1,34 +1,36 @@
 body {
-    font-family: 'Open Sans', sans-serif;
-    background: #fff;
-    color: #3c3c3c;
-  }
+  font-family: 'Open Sans', sans-serif;
+  background: #5c5c5c;
+  color: #3c3c3c;
+}
 
-  .app {
-    text-align: center;
-  }
+.app {
+  text-align: center;
+}
 
-  h1, h3 {
-    font-family: 'Merriweather', serif;
-    text-align: center;
-  }
+h1 {
+  font-family: 'Merriweather', serif;
+  text-align: center;
+  color: #cc0e2e;
+  outline: 2px dashed rgb(255, 38, 0);
+}
 
-  ul {
-    text-align: center;
-    list-style-position: inside;
-    list-style: none;
-  }
+ul {
+  text-align: center;
+  list-style-position: inside;
+  list-style: none;
+}
 
-  .match {
-    background-color: #42FFCC;
-  }
+.match {
+  background-color: #42FFCC;
+}
 
-  .notamatch {
-    background-color: #FD3A5C;
-  }
+.notamatch {
+  background-color: #FD3A5C;
+}
 
-  .partial {
-    color: violet;
-  }
+.partial {
+  color: violet;
+}
 
- /* hj #fd3a5c */
+/* hj #fd3a5c */
