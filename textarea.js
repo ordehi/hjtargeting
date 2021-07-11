@@ -1,41 +1,39 @@
-var container = document.querySelector('.container');
-var backdrop = document.querySelector('.backdrop');
-var highlights = document.querySelector('.highlights');
-var textarea = document.querySelector('textarea');
-var toggleDark = document.querySelector('.dark-mode');
-
-// yeah, browser sniffing sucks, but there are browser-specific quirks to handle that are not a matter of feature detection
-var ua = window.navigator.userAgent.toLowerCase();
-var isIE = !!ua.match(/msie|trident\/7|edge/);
-var isWinPhone = ua.indexOf('windows phone') !== -1;
-var isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
-
-function applyHighlights(text) {
-  text = text
-    .replace(/\n$/g, '\n\n')
+function applyHighlights(text, matches) {
+  let backdropText = "";
+  for (let i = 0; i < matches.length; i++) {
+    if (matches[i] === true) {
+      backdropText += `<mark class="match">${text[i]}</mark>`;
+    } else {
+      backdropText += `<mark class="no-match">${text[i]}</mark>`;
+    }
+  }
+  backdropText = backdropText
+    .replace(/\n$/g, "\n\n")
     .replace(/[A-Z].*?\b/g, '<mark class="match">$&</mark>');
-  
+
   if (isIE) {
     // IE wraps whitespace differently in a div vs textarea, this fixes it
-    text = text.replace(/ /g, ' <wbr>');
+    text = text.replace(/ /g, " <wbr>");
   }
-  
-  return text;
+  console.log(text);
+  highlights.innerHTML = backdropText;
 }
 
 // we're obviously not gonna use innerHTML for prod, you'll need to do some templating here which means some nice refactoring is in order
 function handleInput() {
-  var text = textarea.value;
-  var highlightedText = applyHighlights(text);
+  const text = textarea.value;
+  const highlightedText = applyHighlights(text);
   highlights.innerHTML = highlightedText;
 }
 
 function handleScroll() {
   var scrollTop = textarea.scrollTop;
+  console.log("textarea scroll " + textarea.scrollTop);
   backdrop.scrollTop = scrollTop;
-  
+  console.log("backdrop scroll " + backdrop.scrollTop);
+
   var scrollLeft = textarea.scrollLeft;
-  backdrop.scrollLeft = scrollLeft;  
+  backdrop.scrollLeft = scrollLeft;
 }
 
 function fixIOS() {
@@ -44,13 +42,16 @@ function fixIOS() {
   //   'padding-left': '+=3px',
   //   'padding-right': '+=3px'
   // });
-  highlights.style.paddingLeft += '3px';
-  highlights.style.paddingRight += '3px';
+  highlights.style.paddingLeft += "3px";
+  highlights.style.paddingRight += "3px";
 }
 
 function bindEvents() {
-  textarea.addEventListener('input', handleInput);
-  textarea.addEventListener('scroll', handleScroll);
+  textarea.addEventListener("input", () => {
+    handleScroll();
+    checkForMatches1SecondAfterInput();
+  });
+  textarea.addEventListener("scroll", handleScroll);
 }
 
 if (isIOS) {
@@ -58,4 +59,3 @@ if (isIOS) {
 }
 
 bindEvents();
-handleInput();

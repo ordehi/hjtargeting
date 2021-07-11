@@ -1,95 +1,90 @@
-const resultDiv = document.getElementById("result");
-const validURL = /(https?:\/\/)+([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/;
-
-const validateURLs = (urls) => urls.map((url) => validURL.test(url));
+const validateURLs = (urlsToMatch) =>
+  urlsToMatch.map((url) => validURL.test(url));
 
 function check() {
-  let selection = document.getElementById("rule-select").value;
-  let rule = document.getElementById("rule").value;
-  let urls = document
-    .getElementById("url")
-    .value.split(/\n|\,/)
-    .filter((item) => item);
-  let validity = validateURLs(urls);
-
-  if (selection === "simple" && validURL.test(rule) && validURL.test(urls)) {
-    simplematch(rule, urls, validity);
-  } else if (
-    selection === "exact" &&
-    validURL.test(rule) &&
-    validURL.test(urls)
-  ) {
-    exactContainsStartsOrEnds(rule, urls, validity, selection);
-  } else if (rule !== "" && urls !== "" && validURL.test(urls)) {
-    exactContainsStartsOrEnds(rule, urls, validity, selection);
-  } else {
-    invalidInput(rule, urls, validity);
+  console.log("checking");
+  let targetingRule = rules.value;
+  let targetUrl = targetBox.value;
+  let urlsToMatch = textarea.value.split(/\n|\,/).filter((item) => item);
+  let urlValidity = validateURLs(urlsToMatch);
+  if (targetingRule === "simple") {
+    simplematch(targetUrl, urlsToMatch);
+  }
+  if (validURL.test(targetUrl) && validURL.test(urlsToMatch) && urlValidity) {
+    if (targetingRule === "simple") {
+      simplematch(targetUrl, urlsToMatch);
+    } else if (
+      ["exact", "starts", "ends", "contains"].indexOf(targetingRule) > -1
+    ) {
+      exactContainsStartsOrEnds(targetUrl, urlsToMatch, targetingRule);
+    } else {
+      invalidInput(targetUrl, urlsToMatch);
+    }
   }
 }
 
-function invalidInput(rule, urls) {
+function invalidInput(targetUrl, urlsToMatch) {
   resultDiv.innerHTML =
-    rule === ""
+    targetUrl === ""
       ? "<h3>❗ Please enter a targeting parameter</h3>"
-      : urls.length === 0
+      : urlsToMatch.length === 0
       ? "<h3>❗ Please enter a URL to match</h3>"
-      : !validURL.test(rule) || !validURL.test(urls)
+      : !validURL.test(targetUrl) || !validURL.test(urlsToMatch)
       ? "<h3>❗ Please enter valid URLs. <br> Format must be http://example.com</h3>"
       : "";
 }
 
-function generateResultHTML(matches, urls, validity) {
-  let resultHTML = `<ul>`;
-  for (let i = 0; i < matches.length; i++) {
-    if (matches[i] && validity[i]) {
-      resultHTML += `<li><span class="match"> ${urls[i]}</span></li>`;
-    } else if (matches[i] && !validity[i]) {
-      resultHTML += `<li>❓ <span class="partial">${urls[i]} <- part of the string matches but it is not a valid URL
-            Format must be http://example.com</span></li>`;
-    } else if (!matches[i] && !validity[i]) {
-      resultHTML += `<li>❗❗ <span class="notamatch">${urls[i]}</span> is not a valid URL</li>`;
-    } else {
-      resultHTML += `<li><span class="notamatch"> ${urls[i]}</span></li>`;
-    }
-  }
-  resultHTML += `</ul>`;
-  return resultHTML;
-}
+// function generateResultHTML(matches, urlsToMatch, validity) {
+//   let resultHTML = `<ul>`;
+//   for (let i = 0; i < matches.length; i++) {
+//     if (matches[i] && validity[i]) {
+//       resultHTML += `<li><span class="match"> ${urlsToMatch[i]}</span></li>`;
+//     } else if (matches[i] && !validity[i]) {
+//       resultHTML += `<li>❓ <span class="partial">${urlsToMatch[i]} <- part of the string matches but it is not a valid URL
+//             Format must be http://example.com</span></li>`;
+//     } else if (!matches[i] && !validity[i]) {
+//       resultHTML += `<li>❗❗ <span class="notamatch">${urlsToMatch[i]}</span> is not a valid URL</li>`;
+//     } else {
+//       resultHTML += `<li><span class="notamatch"> ${urlsToMatch[i]}</span></li>`;
+//     }
+//   }
+//   resultHTML += `</ul>`;
+//   return resultHTML;
+// }
 
-function simplematch(rule, urls, validity) {
+function simplematch(targetUrl, urlsToMatch) {
   let protocol = /^https?:\/\//;
   let www = /www\./;
   let params = /\#.*|\?.*|&.*|\/\#.*|\/\?.*|\/$/;
-  let cleanRule = rule
+  let cleanRule = targetUrl
     .replace(protocol, "")
     .replace(www, "")
     .replace(params, "");
 
-  let cleanURLs = urls.map((url) =>
+  let cleanURLs = urlsToMatch.map((url) =>
     url.replace(protocol, "").replace(www, "").replace(params, "")
   );
 
   let matches = cleanURLs.map(
     (url) => url.toLowerCase() === cleanRule.toLowerCase()
   );
-
-  let result = generateResultHTML(matches, urls, validity);
-  resultDiv.innerHTML = result;
+  console.log(matches);
+  applyHighlights(urlsToMatch, matches);
 }
 
-const exactContainsStartsOrEnds = (rule, urls, validity, selection) => {
+const exactContainsStartsOrEnds = (targetUrl, urlsToMatch, targetingRule) => {
   const logicMap = (url) => {
     const logic = {
-      exact: url === rule,
-      contains: url.includes(rule),
-      endswith: url.endsWith(rule),
-      startswith: url.startsWith(rule),
+      exact: url === targetUrl,
+      contains: url.includes(targetUrl),
+      ends: url.endsWith(targetUrl),
+      starts: url.startsWith(targetUrl),
     };
-    return logic[selection];
+    return logic[targetingRule];
   };
-  let matches = urls.map((url) => logicMap(url));
-  let result = generateResultHTML(matches, urls, validity);
-  resultDiv.innerHTML = result;
+  let matches = urlsToMatch.map((url) => logicMap(url));
+  console.log(matches);
+  applyHighlights(urlsToMatch, matches);
 };
 
 const printResult = (bool) =>

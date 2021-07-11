@@ -23,6 +23,7 @@ body {
   flex-direction: column;
   align-items: center;
   max-width: 900px;
+  width: 80vw;
 }
 
 h1 {
@@ -35,12 +36,7 @@ h3 {
   color: #555555;
 }
 
-input[type="text"] {
-  width: 80vw;
-  max-width: 800px;
-  height: 30px;
-  border: 2px solid;
-}
+
 
 .container,
 .backdrop,
@@ -52,7 +48,7 @@ textarea {
 
 .highlights,
 textarea,
-input[type="text"] {
+.target {
   padding: 10px;
   font: 20px/28px 'Open Sans',
     sans-serif;
@@ -96,7 +92,7 @@ textarea {
 
 mark {
   border-radius: 3px;
-  color: transparent;
+  color: red;
 }
 
 mark.no-match {
@@ -145,21 +141,9 @@ mark.match {
 
 textarea:focus,
 button:focus,
-input[type="text"]:focus {
+.target:focus {
   outline: none;
-  box-shadow: 0 0 2px 2px #858585;
-}
-
-textarea,
-textarea:focus,
-button,
-button:focus,
-button:hover,
-input[type="text"],
-input[type="text"]:focus,
-a,
-a:hover {
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  /* box-shadow: 0 0 2px 2px #858585; */
 }
 
 .resources {
@@ -189,4 +173,39 @@ code {
   display: block;
   padding-top: 30px;
   color: transparent;
+}
+
+.target {
+  width: 80%;
+  max-width: 700px;
+  height: 30px;
+  border: 2px solid;
+  padding: 20px 10px;
+}
+
+#rules {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 10px;
+  width: 20%;
+  border: 2px solid;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: 0.5em auto;
+  background-position: right 0.25em center;
+  padding-right: 1em;
+  background-image: url("data:image/svg+xml;charset=utf-8, \
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'> \
+    <polygon points='0,0 60,0 30,40' style='fill:black;'/> \
+    </svg>");
+}
+
+.rule-field {
+  display: flex;
+  width: 80vw;
+  max-width: 800px;
+  padding-bottom: 10px;
 }
